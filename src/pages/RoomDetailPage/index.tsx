@@ -84,23 +84,23 @@ const RoomDetailPage = () => {
     };
   }, [roomId, socket, currentUser.id, navigate, setCurrentRoom, setMemberOfRoom]);
   return (
-    <div className='room-detail-page flex flex-col gap-4 h-full'>
+    <div className='room-detail-page flex flex-col gap-2 h-full'>
       <div className='header flex justify-between gap-2 h-[70px] w-full'>
         <OutRoom />
         <div className='w-[200px] flex justify-center items-center relative'>
           <img className='w-full' src='/room-top.png' alt='' />
-          <span className='absolute flex items-center justify-center w-full h-full font-bold text-[20px] mt-2'>
+          <span className='absolute flex items-center justify-center w-full h-full font-bold text-[20px] mt-2 font-titan'>
             {currentRoom?.roomId}
           </span>
         </div>
         <ShowRoomInfo />
       </div>
-      <div className='body flex-1'>
-        <div className='list-member min-h-[200px] flex items-center w-full'>
+      <div className='body flex-1 h-[calc(100%-150px-1rem)] '>
+        <div className='list-member min-h-[200px] h-full flex items-center w-full'>
           <RoomListMember />
         </div>
       </div>
-      <div className='text-center flex items-center justify-center gap-4 mt-4'>
+      <div className='text-center flex items-center justify-center gap-4'>
         <button
           onClick={handleStartGame}
           className='w-[80px] h-[80px] p-3 rounded-full bg-[#676767ba] hover:bg-[#353535c9] shadow-inner shadow-gray-400 text-white font-bold text-[20px] flex items-center justify-center active:scale-[0.98] transition-all'

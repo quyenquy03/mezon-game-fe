@@ -6,7 +6,9 @@ import { SocketEvents } from "@/constants/SocketEvents";
 import { AppResponse } from "@/interface/app/AppResponse";
 import { RoomInfo } from "@/interface/room/Room";
 import { useSocket } from "@/providers/SocketProvider";
+import { ROUTES } from "@/routes/path";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import { Input } from "@/components/ui/input"
 // import { Label } from "@/components/ui/label"
 interface IRoomValue {
@@ -28,6 +30,7 @@ const ModalCreateRoom = () => {
   });
   const [openModalCreateRoom, setOpenModalCreateRoom] = useState(false);
   const socket = useSocket();
+  const navigate = useNavigate();
   const handleChangeSelect = (name: string, value: string) => {
     setRoomValue({ ...roomValue, [name]: value });
   };
@@ -46,6 +49,7 @@ const ModalCreateRoom = () => {
     }
     socket.on(SocketEvents.ON.CREATE_ROOM_SUCCESS, (data: AppResponse<RoomInfo>) => {
       console.log("Create room success", data);
+      navigate(ROUTES.ROOM + "/" + data.data?.roomId);
       setOpenModalCreateRoom(false);
     });
     socket.on(SocketEvents.ON.CREATE_ROOM_FAILED, (data: AppResponse<null>) => {

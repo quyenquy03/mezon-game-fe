@@ -19,6 +19,7 @@ const GamePage = () => {
   const setCurrentRound = useGameStore((state) => state.setCurrentRound);
   const setGameResult = useGameStore((state) => state.setGameResult);
   const setIsShowGameResult = useGameStore((state) => state.setIsShowGameResult);
+  const setRoundResult = useGameStore((state) => state.setRoundResult);
   const navigate = useNavigate();
   useEffect(() => {
     if (!socket || !gameId || !currentUser?.id) return;
@@ -29,8 +30,10 @@ const GamePage = () => {
       currentRound: 1,
     });
     socket.on(SocketEvents.ON.START_ROUND_SUCCESS, (data: AppResponse<CurrentRoundInfo>) => {
+      console.log("Start round success", data.data);
       setCurrentRoundInfo(data.data as CurrentRoundInfo);
       setCurrentRound((data.data?.currentRound as number) ?? 1);
+      setRoundResult([]);
       const startTurnSubmit: StartTurnSubmit = {
         roomId: roomId as string,
         gameId,
@@ -39,16 +42,13 @@ const GamePage = () => {
         roundId: data.data?.roundId as string,
         currentTurn: 1,
       };
-      console.log("start turn ==========");
       socket.emit(SocketEvents.EMIT.START_TURN, startTurnSubmit);
     });
     socket.on(SocketEvents.ON.START_ROUND_FAILED, (data: AppResponse<null>) => {
-      console.log("start round fail =========");
       setCurrentRoundInfo(null);
       console.log(data.errorMessage);
     });
     socket.on(SocketEvents.ON.CONTINUE_JOIN_GAME_SUCCESS, (data: AppResponse<CurrentRoundInfo>) => {
-      console.log("Continue join game success");
       const combineNextRoundData: ICombineNextRoundSubmitData = {
         roomId: roomId as string,
         gameId,
@@ -56,7 +56,6 @@ const GamePage = () => {
         currentRound: data.data?.currentRound as number,
         roundId: data.data?.roundId as string,
       };
-      console.log("Combine next round", combineNextRoundData);
       socket.emit(SocketEvents.EMIT.COMBINE_NEXT_ROUND, combineNextRoundData);
     });
     socket.on(SocketEvents.ON.CONTINUE_JOIN_GAME_FAILED, (data: AppResponse<null>) => {

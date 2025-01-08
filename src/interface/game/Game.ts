@@ -53,3 +53,10 @@ export interface IEndGameDTO {
   totalBet?: number;
   betOfOneGame?: number;
 }
+
+export interface ITurnResult {
+  turn: number;
+  yourChoice: string;
+  rivalChoice: string;
+  winner: string;
+}
